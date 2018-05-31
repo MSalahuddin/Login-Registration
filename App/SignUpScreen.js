@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {View, Text, Dimensions, Image, TouchableOpacity, TextInput, AsyncStorage} from 'react-native'
 import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker'
+import _ from 'underscore';
+import data from './MLSRegion'
 const {width, height} = Dimensions.get('window')
 
 export default class SignUpScreen extends Component{
@@ -17,34 +19,55 @@ export default class SignUpScreen extends Component{
             lastName:'',
             email:'',
             password:'',
-            retypePass:''
-
+            retypePass:'',
+            users: '',
+            mlsRegion: data,
+            mlsID:''
         }
+    }
+    componentWillMount(){
+        this.getUsers()
+        console.log(this.state.users.length,'kkkkkkkkkkkkk')
+    }
+    async getUsers(){
+        const value = await AsyncStorage.getItem('userArr');
+        const user = JSON.parse(value)
+        this.setState({users: user})
+
     }
     signUp(){
-        const {email, password } = this.state
-        var myArr = []
+        const {email, password, users, date, firstName, lastName, retypePass } = this.state
+        var userArr = []
         let user = { email: email, password: password}
-        myArr.push(user)
-console.log(user)
-        console.log(myArr,'kkkkkkkkkkkkkkkkkkk')
-        try{
-            AsyncStorage.setItem("myKey", "My value here")
-        }catch (error){
-            alert(error)
+        userArr.push(user)
+        let emailExist = false
+        if(firstName == '' || lastName == '' || email == '' || password == '' || retypePass == '' || date == ''){
+            alert('All Fields Required')
+        }
+        else{
+            if(users){
+                this.state.users.map((user)=>{
+                    if(user.email == email){
+                        emailExist = true
+                        alert('Email Already Exist')
+                    }
+                })
+            }
+            if(!emailExist){
+                let allUsers = _.union(userArr, this.state.users)
+                this.setState({users: JSON.stringify(allUsers)}, ()=>{
+                    try{
+                        AsyncStorage.setItem("userArr", this.state.users)
+                    }catch (error){
+                        alert(error)
+                    }
+                })
+            }
         }
 
-        console.log(email)
-        console.log(password)
     }
     render(){
-        let data = [{
-            value: 'Banana',
-        }, {
-            value: 'Mango',
-        }, {
-            value: 'Pear',
-        }];
+console.log(this.state.mlsRegion,'lllllllllllllkkkkkkkkkkk')
         return(
             <View style={{width: width, height:height}}>
                 <View style={{width: width* 0.15, height: height* 0.05, marginTop: height* 0.03, marginLeft: width* 0.03}}>
@@ -52,7 +75,7 @@ console.log(user)
                         <Image source={require('./Images/leftArrow.png')} style={{width: 25, height: 25}}/>
                     </TouchableOpacity>
                 </View>
-                <View style={{width:width, height: height* 0.1, alignItems:'center', justifyContent:'center'}}>
+                <View style={{width:width, height: height* 0.07, alignItems:'center', justifyContent:'center'}}>
                     <Text style={{fontSize: 22, fontWeight: 'bold'}}>Create an Account</Text>
                 </View>
                 <View style={{width:width, height: height* 0.6, alignItems:'center'}}>
@@ -98,9 +121,17 @@ console.log(user)
                     </View>
                     <View>
                         <Dropdown
-                            label='Favorite Fruit'
+                            label='MLS Region'
                             containerStyle= {{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10, justifyContent:'center'}}
-                            data={data}
+                            data={this.state.mlsRegion}
+                        />
+                    </View>
+                    <View>
+                        <TextInput
+                            underlineColorAndroid = 'transparent'
+                            placeholder= 'MLS ID'
+                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            onChangeText = {(text)=> this.setState({mlsID: text})}
                         />
                     </View>
                     <View>
@@ -124,7 +155,7 @@ console.log(user)
                         />
                     </View>
                     <View>
-                        <TouchableOpacity onPress={()=> this.signUp()} style={{width: width* 0.7, height: height*0.07,borderRadius:7, marginTop:30, backgroundColor:'red', justifyContent:'center', alignItems:'center'}}>
+                        <TouchableOpacity onPress={()=> this.signUp()} style={{width: width* 0.7, height: height*0.07,borderRadius:7, marginTop:20, backgroundColor:'rgb(65,147,237)', justifyContent:'center', alignItems:'center'}}>
                             <Text style={{fontSize:18, color:'white'}}>SignUp</Text>
                         </TouchableOpacity>
                     </View>
