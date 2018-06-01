@@ -23,7 +23,9 @@ export default class SignUpScreen extends Component{
             users: '',
             mlsRegion: data,
             mlsID:'',
-            selMls:''
+            selMls:'',
+            showPass: false,
+            showRetypePass: false
         }
     }
     componentWillMount(){
@@ -83,62 +85,68 @@ export default class SignUpScreen extends Component{
                 <View style={{width:width, height: height* 0.6, alignItems:'center'}}>
                     <View>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'First Name'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7}}
+                            style={{width: width* 0.7, height: height*0.07, borderRadius:7}}
                             onChangeText = {(text)=> this.setState({firstName: text})}
                         />
                     </View>
                     <View>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'last Name'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}
                             onChangeText = {(text)=> this.setState({lastName: text})}
                         />
                     </View>
                     <View>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'Email'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}
                             onChangeText = {(text)=> this.setState({email: text})}
                         />
                     </View>
-                    <View>
+                    <View style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'Password'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            secureTextEntry={this.state.showPass ? false : true}
                             onChangeText = {(text)=> this.setState({password: text})}
                         />
+                        <TouchableOpacity style={{ height: 25, width: 25,marginTop: -height*0.055, marginLeft:  215, marginBottom:  30}} onPress={()=> this.setState({showPass: !this.state.showPass})}>
+                            {this.state.showPass ?
+                                <Image source={require('./Images/showPassw.png')} style={{height: 25, width: 25}}/> :
+                                <Image source={require('./Images/showPass.png')} style={{height: 25, width: 25}}/>
+                            }
+                        </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'Re-type Password'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            secureTextEntry={this.state.showRetypePass ? false : true}
                             onChangeText = {(text)=> this.setState({retypePass: text})}
                         />
+                        <TouchableOpacity style={{ height: 25, width: 25,marginTop: -height*0.055, marginLeft:  215, marginBottom:  30}} onPress={()=> this.setState({showRetypePass: !this.state.showRetypePass})}>
+                            {this.state.showRetypePass ?
+                                <Image source={require('./Images/showPassw.png')} style={{height: 25, width: 25}}/> :
+                                <Image source={require('./Images/showPass.png')} style={{height: 25, width: 25}}/>
+                            }
+                        </TouchableOpacity>
                     </View>
                     <View>
                         <Dropdown
                             label='MLS Region'
-                            containerStyle= {{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10, justifyContent:'center'}}
+                            containerStyle= {{width: width* 0.7, paddingLeft: 5, paddingBottom: 25, height: height*0.07, borderRadius:7, marginTop:10, justifyContent:'center'}}
                             data={this.state.mlsRegion}
                         />
                     </View>
                     <View>
                         <TextInput
-                            underlineColorAndroid = 'transparent'
                             placeholder= 'MLS ID'
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}
                             onChangeText = {(text)=> this.setState({mlsID: text})}
                         />
                     </View>
                     <View>
                         <DatePicker
-                            style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                            style={{width: width* 0.7, height: height*0.06,borderRadius:7, marginTop:10}}
                             date={this.state.date}
                             showIcon= {false}
                             mode="date"
@@ -155,6 +163,7 @@ export default class SignUpScreen extends Component{
                             }}
                             onDateChange={(date) => {this.setState({date: date})}}
                         />
+                        <View style={{borderBottomWidth:1, borderBottomColor: 'black'}}></View>
                     </View>
                     <View>
                         <TouchableOpacity onPress={()=> this.signUp()} style={{width: width* 0.7, height: height*0.07,borderRadius:7, marginTop:20, backgroundColor:'rgb(65,147,237)', justifyContent:'center', alignItems:'center'}}>

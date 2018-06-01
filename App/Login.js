@@ -12,7 +12,8 @@ export default class Login extends Component{
         this.state={
             email:'',
             password:'',
-            users: ''
+            users: '',
+            showPass: false
         }
     }
 
@@ -73,21 +74,24 @@ export default class Login extends Component{
                         <View style={{width:width, height: height* 0.5, alignItems:'center', marginTop:height * 0.05}}>
                             <View>
                                 <TextInput
-                                    underlineColorAndroid = 'transparent'
                                     placeholder= 'Email'
-                                    style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7}}
+                                    style={{width: width* 0.7, height: height*0.07,borderRadius:7}}
                                     onChangeText = {(text)=> this.setState({email: text})}
                                 />
                             </View>
-                            <View>
+                            <View style={{width: width* 0.7, height: height*0.07, borderRadius:7, marginTop:10}}>
                                 <TextInput
-                                    underlineColorAndroid = 'transparent'
                                     placeholder= 'Password'
-                                    style={{width: width* 0.7, height: height*0.07, borderWidth:1, borderColor:'grey', borderRadius:7, marginTop:10}}
+                                    secureTextEntry={this.state.showPass ? false : true}
                                     onChangeText = {(text)=> this.setState({password: text})}
                                 />
+                                <TouchableOpacity style={{ height: 25, width: 25,marginTop: -height*0.055, marginLeft:  215, marginBottom:  30}} onPress={()=> this.setState({showPass: !this.state.showPass})}>
+                                    {this.state.showPass ?
+                                        <Image source={require('./Images/showPassw.png')} style={{height: 25, width: 25}}/> :
+                                        <Image source={require('./Images/showPass.png')} style={{height: 25, width: 25}}/>
+                                    }
+                                </TouchableOpacity>
                             </View>
-
                             <View>
                                 <TouchableOpacity onPress= {()=> this.logIn()} style={{width: width* 0.7, height: height*0.07,borderRadius:7, marginTop:height* 0.05, backgroundColor:'rgb(65,147,237)', justifyContent:'center', alignItems:'center'}}>
                                     <Text style={{fontSize:18, color:'white'}}>Log In</Text>
