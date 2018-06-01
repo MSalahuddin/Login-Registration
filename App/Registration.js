@@ -14,6 +14,7 @@ export default class Registration extends Component{
     componentWillMount(){
         AsyncStorage.getItem('userArr').then((val)=>{
             let value = JSON.parse(val);
+            console.log(value,'kkkkkkkkkkkkkkkkkkkkkkkk')
             this.getData(value)
         }).done
     }

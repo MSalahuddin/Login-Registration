@@ -46,6 +46,7 @@ export default class Login extends Component{
                 this.setState({users: JSON.stringify(this.state.users)}, ()=>{
                     try{
                         AsyncStorage.setItem("userArr", this.state.users)
+                        this.props.navigation.navigate("MainScreen", {screen: "MainScreen"})
                     }catch (error){
                         alert(error)
                     }

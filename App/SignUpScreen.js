@@ -22,12 +22,13 @@ export default class SignUpScreen extends Component{
             retypePass:'',
             users: '',
             mlsRegion: data,
-            mlsID:''
+            mlsID:'',
+            selMls:''
         }
     }
     componentWillMount(){
+        console.log('kkkkkkkkkkkkkkkkllllllllllllllllllllllllll')
         this.getUsers()
-        console.log(this.state.users.length,'kkkkkkkkkkkkk')
     }
     async getUsers(){
         const value = await AsyncStorage.getItem('userArr');
@@ -37,8 +38,9 @@ export default class SignUpScreen extends Component{
     }
     signUp(){
         const {email, password, users, date, firstName, lastName, retypePass } = this.state
+        let id = email + password
         var userArr = []
-        let user = { email: email, password: password}
+        let user = { email: email, password: password, id: id}
         userArr.push(user)
         let emailExist = false
         if(firstName == '' || lastName == '' || email == '' || password == '' || retypePass == '' || date == ''){
@@ -58,6 +60,7 @@ export default class SignUpScreen extends Component{
                 this.setState({users: JSON.stringify(allUsers)}, ()=>{
                     try{
                         AsyncStorage.setItem("userArr", this.state.users)
+                        this.props.navigation.navigate("MainScreen", {screen: "MainScreen"})
                     }catch (error){
                         alert(error)
                     }
@@ -67,7 +70,6 @@ export default class SignUpScreen extends Component{
 
     }
     render(){
-console.log(this.state.mlsRegion,'lllllllllllllkkkkkkkkkkk')
         return(
             <View style={{width: width, height:height}}>
                 <View style={{width: width* 0.15, height: height* 0.05, marginTop: height* 0.03, marginLeft: width* 0.03}}>
